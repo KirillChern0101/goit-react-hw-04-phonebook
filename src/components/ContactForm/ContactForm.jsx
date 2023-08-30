@@ -1,27 +1,31 @@
 import propTypes from 'prop-types';
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import css from './ContactForm.module.css';
 
 export const ContactForm = ({ handleSubmit }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handleChangeName = e => {
-    const { value } = e.target;
-    setName(value);
-  };
+  const handleChange = e => {
+    const { name, value } = e.target;
 
-  const handleChangeNumber = e => {
-    const { value } = e.target;
-    setNumber(value);
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    const form = e.currentTarget;
     handleSubmit({ name: name, number: number });
-    form.reset();
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -36,7 +40,7 @@ export const ContactForm = ({ handleSubmit }) => {
         required
         placeholder="Enter name"
         value={name}
-        onChange={handleChangeName}
+        onChange={handleChange}
       />
       <label className={css.formLabel}>Number </label>
       <input
@@ -48,7 +52,7 @@ export const ContactForm = ({ handleSubmit }) => {
         required
         placeholder="Enter phone number"
         value={number}
-        onChange={handleChangeNumber}
+        onChange={handleChange}
       />
       <button className={css.formBtn} type="submit">
         Add contact
